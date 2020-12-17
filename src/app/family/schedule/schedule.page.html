@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Next 30 days schedules
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p text-right padding-end *ngIf="userData.user">{{userData.user.first_name}} {{userData.user.last_name}} | {{currentDateTime}}</p>
+  <ion-list padding>
+    <ion-item-sliding #slidingItem [attr.track]="'workshop'" *ngFor="let schedule of scheduleList">
+      <ion-item (click)="goToScheduleDetail(schedule)">
+        <div class="item-content">
+          <h3>{{schedule.user_id.first_name}} {{schedule.user_id.last_name}}</h3>
+          <div>
+            <p>
+              {{convertDate(schedule.date)}} | {{schedule.start_time}} - {{schedule.end_time}} | {{calcDurationHours(schedule.start_time, schedule.end_time)}}hours
+            </p>
+          </div>
+        </div>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p text-center>Copyright(c) {{durationYear}} Carewell</p>
+  </ion-toolbar>
+</ion-footer>

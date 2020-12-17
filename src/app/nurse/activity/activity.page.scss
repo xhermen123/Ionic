@@ -1,0 +1,108 @@
+@import 'src/theme/variables.scss';
+
+$categories: (
+  ionic: color($colors, primary),
+  angular: #AC282B,
+  communication: #8E8D93,
+  tooling: #FE4C52,
+  services: #FD8B2D,
+  design: #FED035,
+  workshop: #69BB7B,
+  food: #3BC7C4,
+  documentation: #B16BE3,
+  navigation: #6600CC,
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+@each $track, $value in auxiliary-categories() {
+  ion-item-sliding[track=#{$track}] ion-item {
+    border-left: 2px solid $value;
+  }
+}
+
+ion-item-sliding {
+  margin: 15px 0px;
+}
+
+.item-content {
+  h3 {
+    font-size: 14px;
+    margin: 4px 0px 10px 0px;
+  }
+
+  p {
+    font-size: 12px;
+    color: grey;
+    margin: 4px 0px;
+  }
+
+  .item-desc {
+    display: flex;
+  }
+}
+
+.activity-header {
+  border-bottom: 1px solid #000
+}
+
+.activity-row {
+  border-bottom: 1px dashed #000
+}
+
+.activity-value {
+  border-left: 1px solid #000
+}
+
+.observation-header {
+  border-bottom: 1px solid #000
+}
+
+.observation-row {
+  border-bottom: 1px dashed #000
+}
+
+.custom-item {
+  --border-style: none;
+}
+
+.activity-item-name {
+  font-size: 12px;
+}
+
+.activity-item-name.additional {
+  text-align: right;
+}
+
+.activity-item-label {
+  font-size: 12px;
+  width: 50px;
+}
+
+ion-checkbox.checkbox-disabled {
+  opacity: .7;
+
+}
+
+ion-item.item-interactive-disabled .sc-ion-label-md-h {
+  opacity: .7;
+  pointer-events: auto;
+}
+
+.slide-move-btn-wrapper {
+  height: 30px;
+  padding: 8px;
+}
+
+ion-slide {
+  display: block;
+}
+
+:host {
+  .observation-item .sc-ion-label-ios-h {
+    margin-left: 10px;
+    opacity: 1;
+  }
+}

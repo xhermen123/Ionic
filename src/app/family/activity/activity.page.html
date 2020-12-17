@@ -1,0 +1,154 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Activity Report
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p text-right padding-end *ngIf="userData.user">{{userData.user.first_name}} {{userData.user.last_name}} | {{currentDateTime}}</p>
+  <div padding>
+    <p>Unsigned Activity Report: {{unsignedCount}}</p>
+    <!-- <p class="margin-bottom-10">Select Nurse</p> -->
+    <ion-select placeholder="Select Nurse" class="patient-select" [(ngModel)]="selectedNurseId" (ionChange)="onChangeNurse()">
+      <ion-select-option *ngFor="let nurse of nurseList" value="{{nurse._id}}">
+        {{nurse.first_name + " " + nurse.last_name}}
+      </ion-select-option>
+    </ion-select>
+    <ion-item>
+      <ion-datetime padding-end [(ngModel)]="date" (ionChange)="onChangeDate()" placeholder="Date" display-format="MM/DD/YYYY"></ion-datetime>
+      <ion-label>({{week}})</ion-label>
+    </ion-item>
+
+    <div *ngIf="currentActivity">
+      <div class="slide-move-btn-wrapper" *ngIf="currentActivity">
+          <button type="submit" float-left ion-button  color="primary" class="btnPrev" (click)="prev()">Prev</button>
+          <button type="submit" float-right ion-button color="primary" class="btnNext" (click)="next()">Next</button>
+      </div>
+      <ion-slides pager="false" [options]="slideOpts" (ionSlideDidChange)="onActivitySlideChange()" #slides>
+        <ion-slide *ngFor="let activityList of activityListForWeek; let $index = index">
+          <!-- <p>{{dayList[$index]}} {{date | date: 'MM/dd/yyyy'}}</p> -->
+          <ion-grid>
+            <ion-row class="activity-header">
+              <ion-col text-center size="4">
+                Activity
+              </ion-col>
+              <ion-col text-center>
+                {{dayList[$index]}} {{date | date: 'MM/dd/yyyy'}}
+              </ion-col>
+            </ion-row>
+            <ion-row align-items-center class="activity-row" *ngFor="let header of activityData.activityHeaders">
+              <ion-col class="activity-item-name" size="4">
+                {{header.value}}
+              </ion-col>
+              <ion-col class="activity-value">
+                <ion-item class="custom-item">
+                  <ion-checkbox mode="ios" [(ngModel)]="activityList[header.value].status" disabled="true"></ion-checkbox>
+                  <ion-label *ngIf="activityList[header.value].status" class="activity-item-label" (click)="openShowComment(activityList[header.value].comment)">
+                    <p>{{activityList[header.value].comment}}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row align-items-center class="activity-row">
+              <ion-col class="activity-item-name additional" size="4">
+                DAILY TIME IN
+              </ion-col>
+              <ion-col class="activity-value">
+                <ion-item class="custom-item">
+                  <ion-label *ngIf="activityList['check_in']" class="activity-item-label">
+                    <p>{{activityList['check_in'] | date : 'medium'}}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row align-items-center class="activity-row">
+              <ion-col class="activity-item-name additional" size="4">
+                DAILY TIME OUT
+              </ion-col>
+              <ion-col class="activity-value">
+                <ion-item class="custom-item">
+                  <ion-label *ngIf="activityList['check_out']" class="activity-item-label">
+                    <p>{{activityList['check_out'] | date : 'medium'}}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+            <ion-row align-items-center class="activity-row">
+              <ion-col class="activity-item-name additional" size="4">
+                NUMBER OF HOURS
+              </ion-col>
+              <ion-col class="activity-value">
+                <ion-item class="custom-item">
+                  <ion-label *ngIf="activityList['hours']" class="activity-item-label">
+                    <p>{{activityList['hours'] | number : '1.0-0'}}</p>
+                  </ion-label>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-slide>
+      </ion-slides>
+      <div class="slide-move-btn-wrapper" *ngIf="currentActivity">
+          <button type="submit" float-left ion-button  color="primary" class="btnPrev" (click)="prev()">Prev</button>
+          <button type="submit" float-right ion-button color="primary" class="btnNext" (click)="next()">Next</button>
+      </div>
+      
+      <!-- <ion-button expand="full">Text</ion-button> -->
+      <br />
+  
+      <p>Observations:</p>
+      <ion-grid>
+        <ion-row class="observation-header">
+          <ion-col text-center>
+            Answer each question by checking the box that applies
+          </ion-col>
+          <ion-col text-center>
+            Yes/No/Observation if YES 
+          </ion-col>
+        </ion-row>
+        <ion-row align-items-center *ngFor="let observation of observationList" class="observation-row">
+          <ion-col>
+            {{observation.value}}
+          </ion-col>
+          <ion-col class="observation-value">
+            <ion-item class="custom-item observation-item">
+              <ion-toggle [(ngModel)]="observation.status" disabled="true"></ion-toggle>
+              <ion-label *ngIf="observation.status" (click)="openShowComment(observation.comment)">
+                <p>{{observation.date | date: 'medium'}}</p>
+                <p>{{observation.comment}}</p>
+              </ion-label>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      <br />
+      <p>Additional Comments:</p>
+      <ion-label>
+        <p *ngFor="let additionalComment of additionalCommentList" (click)="openShowComment(additionalComment.comment)">{{additionalComment.update_date | date: 'medium'}}: {{additionalComment.comment}}</p>
+      </ion-label>
+      <div *ngIf="signStatus && signStatus.status">
+        <!-- <img [src]="signatureImage" *ngIf="signatureImage" /> -->
+        <p>Signed Date: {{signStatus.date | date: 'medium'}}</p>
+        <p>Signed By: {{signStatus.name}}</p>
+      </div>
+      <div *ngIf="!signStatus || !signStatus.status">
+        <ion-button expand="full" (click)="approveActiviy()">Approve</ion-button>
+      </div>
+    </div>
+    <div *ngIf="!currentActivity">
+      <p>No Activity</p>
+    </div>
+    
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p text-center>Copyright(c) {{durationYear}} Carewell</p>
+  </ion-toolbar>
+</ion-footer>

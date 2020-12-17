@@ -1,0 +1,45 @@
+@import 'src/theme/variables.scss';
+
+$categories: (
+  ionic: color($colors, primary),
+  angular: #AC282B,
+  communication: #8E8D93,
+  tooling: #FE4C52,
+  services: #FD8B2D,
+  design: #FED035,
+  workshop: #69BB7B,
+  food: #3BC7C4,
+  documentation: #B16BE3,
+  navigation: #6600CC,
+);
+
+@function auxiliary-categories() {
+  @return map-remove($categories);
+}
+
+@each $track, $value in auxiliary-categories() {
+  ion-item-sliding[track=#{$track}] ion-item {
+    border-left: 2px solid $value;
+  }
+}
+
+ion-item-sliding {
+  margin: 15px 0px;
+}
+
+.item-content {
+  h3 {
+    font-size: 14px;
+    margin: 4px 0px 10px 0px;
+  }
+
+  p {
+    font-size: 12px;
+    color: grey;
+    margin: 4px 0px;
+  }
+
+  .item-desc {
+    display: flex;
+  }
+}

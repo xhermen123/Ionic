@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Profile
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p text-right padding-end *ngIf="userData.user">{{userData.user.first_name}} {{userData.user.last_name}} | {{currentDateTime}}</p>
+  <form [formGroup]="profileForm" (ngSubmit)="save(profileForm)">
+    <div padding>
+      <ion-item>
+        <ion-input [(ngModel)]="profile.first_name" formControlName="first_name" type="text" spellcheck="false" autocapitalize="off"
+          placeholder="First Name*"
+          required>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="profile.last_name" formControlName="last_name" type="text" spellcheck="false" autocapitalize="off"
+          placeholder="Last Name*"
+          required>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="profile.email1" formControlName="email1" type="email" placeholder="Email 1*" required>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="profile.email2" formControlName="email2" type="email" placeholder="Email 2">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="profile.phone1" formControlName="phone1" type="text" placeholder="Phone 1*" required>
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input [(ngModel)]="profile.phone2" formControlName="phone2" type="text" placeholder="Phone 2">
+        </ion-input>
+      </ion-item>
+    </div>
+
+    <div padding>
+      <ion-button size="medium" type="submit" expand="block" [disabled]="!profileForm.valid">save</ion-button>
+    </div>
+    <div padding text-right class="change-password">
+      <a size="large" (click)="changePasswordPop($event)" type="button" expand="block">change password</a>
+    </div>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p text-center>Copyright(c) {{durationYear}} Carewell</p>
+  </ion-toolbar>
+</ion-footer>

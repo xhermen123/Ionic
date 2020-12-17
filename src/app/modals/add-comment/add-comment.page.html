@@ -1,0 +1,12 @@
+<ion-content>
+  <div padding>
+      <p>Comment</p>
+      <div>
+        <ion-textarea placeholder="Enter comment here..." [(ngModel)]="comment"></ion-textarea>
+      </div>
+      <div class="btn-wrapper">
+          <ion-button (click)="cancel()">Cancel</ion-button>
+          <ion-button (click)="ok()">Ok</ion-button>
+      </div>
+  </div>
+</ion-content>

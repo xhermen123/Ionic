@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <p text-right padding-end *ngIf="userData.user">{{userData.user.first_name}} {{userData.user.last_name}} | {{currentDateTime}}</p>
+    <ion-list padding>
+      <!-- <ion-item-group>
+        <ion-item-divider sticky>
+          <ion-label>A</ion-label>
+        </ion-item-divider>
+        -->
+        <ion-item-sliding #slidingItem [attr.track]="'workshop'" *ngFor="let attendance of attendanceList">
+          <ion-item (click)="goToAttendanceDetail(attendance)">
+            <div class="item-content">
+                <h3>{{attendance.user_id.first_name}} {{attendance.user_id.last_name}}</h3>
+              <div>
+                <p>
+                  {{convertDateTime(attendance.clockin_time)}} - {{convertDateTime(attendance.clockout_time)}}
+                  <ion-text *ngIf="attendance.status !== 'Not completed'"> | {{calcAttendanceDurationHours(attendance.clockin_time, attendance.clockout_time)}}hours</ion-text>
+                </p>
+              </div>
+              <div>
+                <p>
+                  <ion-text>Approve Status: </ion-text>
+                  <ion-text *ngIf="attendance.status === 'Pending'" style="color: red;">{{attendance.status}}</ion-text>
+                  <ion-text *ngIf="attendance.status === 'Approved'" style="color: green;">{{attendance.status}}</ion-text>
+                  <ion-text *ngIf="attendance.status === 'Disapproved'" style="color: orange;">{{attendance.status}}</ion-text>
+                  <ion-text *ngIf="attendance.status === 'Not completed'">{{attendance.status}}</ion-text>
+                </p>
+              </div>
+            </div>
+          </ion-item>
+        </ion-item-sliding>
+      <!-- </ion-item-group> -->
+    </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p text-center>Copyright(c) {{durationYear}} Carewell</p>
+  </ion-toolbar>
+</ion-footer>
+  

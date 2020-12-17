@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon name="arrow-back" (click)="closeModal()" size="large"></ion-icon>
+    </ion-buttons>
+    <ion-title>
+      Schedule
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div padding>
+    <ion-text>
+      <p *ngIf="schedule && userData.user.role ==='family'">
+        Nurse : {{schedule.user_id.first_name}} {{schedule.user_id.last_name}}
+      </p>
+    </ion-text>
+    <ion-text>
+      <p *ngIf="schedule">
+        Patient : {{schedule.patient_id.first_name}} {{schedule.patient_id.last_name}}
+      </p>
+    </ion-text>
+    <ion-text>
+      <p *ngIf="schedule">
+        Date : {{convertDate(schedule.date)}}
+      </p>
+    </ion-text>
+    <ion-text>
+      <p *ngIf="schedule">
+        Time : {{schedule.start_time}} - {{schedule.end_time}} | {{calcDurationHours(schedule.start_time, schedule.end_time)}}hours
+      </p>
+    </ion-text>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p text-center>Copyright(c) {{durationYear}} Carewell</p>
+  </ion-toolbar>
+</ion-footer>

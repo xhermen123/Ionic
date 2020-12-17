@@ -1,0 +1,130 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Home
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p text-right padding-end *ngIf="userData.user">{{userData.user.first_name}} {{userData.user.last_name}} | {{currentDateTime}}</p>
+  <div padding>
+    <p class="margin-bottom-10">Select Patient</p>
+    <ion-select placeholder="Select One" class="patient-select" [(ngModel)]="selectedScheduleId" (ionChange)="onChangePatient()" disabled="{{attendance ? !attendance.clockout_time : false}}">
+      <ion-select-option *ngFor="let schedule of scheduleList" value="{{schedule._id}}">
+        {{schedule.patient_id.first_name + " " + schedule.patient_id.last_name}}
+      </ion-select-option>
+    </ion-select>
+    <ion-text>
+      <p text-center *ngIf="schedule">
+        Schedule : {{convertDate(schedule.date)}} {{schedule.start_time}} - {{schedule.end_time}}
+      </p>
+    </ion-text>
+    <ion-grid>
+      <p text-center *ngIf="attendance ? attendance.clockin_time : false" class="margin-bottom-0">clocked in at {{convertDateTime(attendance.clockin_time)}}</p>
+      <ion-row>
+        <ion-col size="3">
+        </ion-col>
+        <ion-col>
+          <ion-button class="home-btn" expand="full" color="primary" disabled="{{patient ? attendance ? attendance.clockin_time : false : true}}" (click)="onClockIn()">Clock In</ion-button>
+        </ion-col>
+        <ion-col size="3">
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <p text-center *ngIf="attendance ? attendance.clockin_time && !attendance.clockout_time : false"><a (click)="onCancelClockIn()">Cancel Clock-in</a></p>
+    <!-- <p text-center *ngIf="attendance ? attendance.clockout_time : false"><a (click)="onCancelClockOut()">I made a mistake by clockout</a></p> -->
+    <ion-grid>
+      <ion-row>
+        <ion-col size="3">
+        </ion-col>
+        <ion-col>
+          <ion-button class="home-btn" expand="full" color="primary" disabled="{{patient && attendance ? attendance.clockin_time ? !!attendance.clockout_time : true : true}}" (click)="onClockOut()">Clock Out</ion-button>
+        </ion-col>
+        <ion-col size="3">
+        </ion-col>
+      </ion-row>
+      <p text-center *ngIf="attendance ? attendance.clockout_time : false" class="margin-top-0">clocked out at {{convertDateTime(attendance.clockout_time)}}</p>
+    </ion-grid>
+  </div>
+  <div padding *ngIf="patient && attendance ? attendance.clockin_time ? true : false : false">
+    <p>Activity List</p>
+    <ion-grid>
+      <ion-row class="activity-header">
+        <ion-col text-center size="4">
+          Activity
+        </ion-col>
+        <ion-col text-center>
+          Done?
+        </ion-col>
+      </ion-row>
+      <ion-row align-items-center class="activity-row" *ngFor="let activity of activityList">
+        <ion-col class="activity-item-name" size="4">
+          {{activity.name}}
+        </ion-col>
+        <ion-col class="activity-value">
+          <ion-item class="custom-item" *ngIf="!attendance.clockout_time">
+            <ion-checkbox mode="ios" [(ngModel)]="activity.status" (ionChange)="onActivityToggled($event, activity)"></ion-checkbox>
+            <ion-label class="activity-item-label">{{activity.status ? (activity.update_date | date : 'medium') : "Mark Done"}}</ion-label>
+          </ion-item>
+          <ion-item class="custom-item" *ngIf="!!attendance.clockout_time">
+            <ion-checkbox mode="ios" [(ngModel)]="activity.status" (ionChange)="onActivityToggled($event, activity)" disabled="true"></ion-checkbox>
+            <ion-label *ngIf="activity.comment != null">
+              <p>{{activity.comment}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <br />
+    <p>Additional Comments:</p>
+    <ion-item class="additional-comment row" *ngFor="let add_comment of attendance.additionalComment" (click)="presentActionSheet($event, add_comment)">
+      <p>{{add_comment.comment}}</p>
+      <div>
+        <ion-icon class="edit-icon" name="create"></ion-icon>
+        <ion-icon class="delete-icon" name="trash"></ion-icon>
+      </div>
+    </ion-item>
+    <a class="add-additional-comment" *ngIf="!attendance.clockout_time" (click)="onAdditionalComment()">Add additional comment</a>
+    <br />
+
+    <p>Observations:</p>
+    <ion-grid>
+      <ion-row class="observation-header">
+        <ion-col text-center>
+          Answer each question by checking the box that applies
+        </ion-col>
+        <ion-col text-center>
+          Yes/No/Observation if YES 
+        </ion-col>
+      </ion-row>
+      <ion-row align-items-center *ngFor="let observation of observationList" class="observation-row">
+        <ion-col size="6">
+          {{observation.name}}
+        </ion-col>
+        <ion-col size="6" class="observation-value">
+          <ion-item class="custom-item observation-item" *ngIf="!attendance.clockout_time">
+            <ion-toggle [(ngModel)]="observation.status" (ionChange)="onObservationToggled($event, observation)"></ion-toggle>
+            <ion-label *ngIf="observation.comment" (click)="openShowComment(observation.comment)">{{observation.comment}}</ion-label>
+          </ion-item>
+          <ion-item class="custom-item" *ngIf="!!attendance.clockout_time">
+            <ion-label *ngIf="observation.comment != null" (click)="openShowComment(observation.comment)">
+              <p>{{observation.comment}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p text-center>Copyright(c) {{durationYear}} Carewell</p>
+  </ion-toolbar>
+</ion-footer>

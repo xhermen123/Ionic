@@ -1,0 +1,14 @@
+{
+  "name": "Carewell",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular",
+  "id": "2bdc092e",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http//localhost:5000"
+    }
+  ]
+}

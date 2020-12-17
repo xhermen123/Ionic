@@ -1,0 +1,77 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-icon name="arrow-back" (click)="closeModal()" size="large"></ion-icon>
+    </ion-buttons>
+    <ion-title>
+      Attendance
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div padding>
+    <ion-text>
+      <p *ngIf="attendance">
+        Patient : {{attendance.patient_id.first_name}} {{attendance.patient_id.last_name}}
+      </p>
+    </ion-text>
+    <ion-text>
+      <p *ngIf="attendance">
+        Clockin time : {{convertDateTime(attendance.clockin_time)}}
+      </p>
+    </ion-text>
+    <ion-text>
+      <p *ngIf="attendance">
+        <ion-text *ngIf="attendance.status !== 'Not completed'">Clockout time : {{convertDateTime(attendance.clockout_time)}}</ion-text>
+      </p>
+    </ion-text>
+    <ion-text>
+      <p *ngIf="attendance">
+        <ion-text *ngIf="attendance.status !== 'Not completed'">Duration : {{calcAttendanceDurationHours(attendance.clockin_time, attendance.clockout_time)}}hours</ion-text>
+      </p>
+    </ion-text>
+    <ion-text>
+      <p *ngIf="attendance">
+        Clockin distance : {{attendance.clockin_distance_from_address}}km
+      </p>
+    </ion-text>
+    <ion-text>
+      <p *ngIf="attendance">
+        <ion-text *ngIf="attendance.status !== 'Not completed'">Clockout distance : {{attendance.clockout_distance_from_address}}km</ion-text>
+      </p>
+    </ion-text>
+    <!-- <ion-text>
+      <p *ngIf="attendance">
+        <ion-text>Status : </ion-text>
+        <ion-text *ngIf="attendance.status === 'Pending'" style="color: red;">{{attendance.status}}</ion-text>
+        <ion-text *ngIf="attendance.status === 'Approved'" style="color: green;">{{attendance.status}}</ion-text>
+        <ion-text *ngIf="attendance.status === 'Disapproved'" style="color: orange;">{{attendance.status}}</ion-text>
+        <ion-text *ngIf="attendance.status === 'Not completed'">{{attendance.status}}</ion-text>
+      </p>
+    </ion-text> -->
+    <ion-text>
+      <p *ngIf="attendance && !showApprove">
+        <ion-text *ngIf="attendance.status !== 'Not completed'">Note : {{attendance.note ? attendance.note : "No writing"}}</ion-text>
+      </p>
+    </ion-text>
+  </div>
+<!-- 
+  <div padding *ngIf="showApprove">
+    <ion-item>
+      <ion-textarea [(ngModel)]="note" placeholder="Enter comment here..." (keydown)="onChangeComment()" [color]="noteRequired? 'danger' : ''"></ion-textarea>
+    </ion-item>
+    <ion-text padding [hidden]="!noteRequired" color="danger" class="validation-error">
+        Comment is required
+    </ion-text>
+    <ion-button (click)="onApprove()" size="medium" type="button" expand="block">Approve</ion-button>
+    <br />
+    <p text-center><a (click)="onDisapprove()" size="medium" type="button" expand="block" color="danger">Disapprove</a></p>
+  </div> -->
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <p text-center>Copyright(c) {{durationYear}} Carewell</p>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,48 @@
+.validation-error{
+  color: red;
+  font-size: 14px;
+  padding-left: 16px;
+  margin: 5px 0px;
+}    
+
+img.img-icon {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 30px 0px 30px;
+    width: 50%;
+}
+img.img-logo {
+    margin: 0px 0px 0px 0px;
+    padding: 0px 30px 0px 30px;
+    width: 75%;
+}
+
+$white-color: #fff;
+$height100: 100%;
+
+ion-grid {
+    width:100%;
+    height: $height100;
+    background: #dfdfdf;
+}
+
+ion-row {
+    height: $height100;
+}
+
+ion-col {
+    border: 1px solid #488aff;
+    background: $white-color;
+}
+
+ion-button {
+    font-weight: 300;
+}
+
+@media (min-width: 240px) and (max-width: 768px) {
+    ion-grid {
+        background: $white-color;
+    }
+    ion-col {
+        border: none;
+    }
+}

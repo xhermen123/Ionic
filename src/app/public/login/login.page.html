@@ -1,0 +1,50 @@
+<ion-grid>
+  <ion-row justify-content-center>
+    <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+      <div text-center>
+        <br/>
+        <br/>
+        <img src="assets/icon/icon.png" class="img-icon"/>
+        <img src="assets/imgs/carewell_logo.png" class="img-logo"/>
+        <p style="font-size: 10px;">v 0.52</p>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <!-- <h4>Login</h4> -->
+      </div>
+      <form #loginForm="ngForm">
+        <div padding>
+          <ion-item>
+            <ion-input [(ngModel)]="loginData.username" name="username" type="text" #username="ngModel" spellcheck="false" autocapitalize="off"
+              placeholder="Username"
+              required>
+            </ion-input>
+          </ion-item>
+          <p ion-text [hidden]="username.valid || submitted == false" color="danger" class="validation-error">
+            Username is required
+          </p>
+    
+          <ion-item>
+            <ion-input [(ngModel)]="loginData.password" name="password" type="password" #password="ngModel" placeholder="Password" required>
+            </ion-input>
+          </ion-item>
+          <p ion-text [hidden]="password.valid || submitted == false" color="danger" class="validation-error">
+            Password is required
+          </p>
+        </div>
+  
+        <div padding>
+          <ion-button size="large" (click)="onSignIn(loginForm)" type="submit" expand="block">Login</ion-button>
+        </div>
+      </form>
+    </ion-col>
+  </ion-row>
+</ion-grid>
+
+<ion-footer>
+  <ion-toolbar>
+    <p text-center>Copyright(c) {{durationYear}} Carewell</p>
+  </ion-toolbar>
+</ion-footer>
